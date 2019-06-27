@@ -1,0 +1,6 @@
+.dropdown-menu { 
+    margin-top: 15px;
+}
+.dropdown-toggle, .dropdown-item {
+    cursor: pointer;
+}
