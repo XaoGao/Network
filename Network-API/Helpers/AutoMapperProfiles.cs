@@ -25,6 +25,7 @@ namespace Network_API.Helpers
                     opt.MapFrom(src => new DateTime(DateTime.Now.Subtract(src.DateOfBirth).Ticks).Year);
                 });
             CreateMap<Photo, PhotosForDetailedDto>();
+            CreateMap<UserForUpdateDto, User>();
         }
     }
 }
