@@ -56,7 +56,7 @@ namespace Network_API.Data
         /// <returns>Null - пользователя не существет или не корректный пароль, иначе возвращает пользователя их БД</returns>
         public async Task<User> Login(string username, string password)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+            var user = await _context.Users.Include(u => u.Photos).FirstOrDefaultAsync(u => u.Username == username);
 
             if (user == null)
                 return null;
