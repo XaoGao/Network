@@ -31,15 +31,18 @@ namespace Network_API.Controllers
         {
             // we do not create validate block because [ApiControlle] auto do it
 
-            userForRegisterDto.username = userForRegisterDto.username.ToLower();
+            userForRegisterDto.Username = userForRegisterDto.Username.ToLower();
 
-            if (await _repo.UserExists(userForRegisterDto.username))
+            if (await _repo.UserExists(userForRegisterDto.Username))
                 return BadRequest("User already exists");
 
-            var createdUser = await _repo.Register(new User { Username = userForRegisterDto.username }, userForRegisterDto.password);
+            var userToCreate = _mapper.Map<User>(userForRegisterDto);
 
-            //TODO: need retutn CreateAtRoot() but we do not have GET User method
-            return StatusCode(201);
+            var createdUser = await _repo.Register(userToCreate, userForRegisterDto.Password);
+
+            var userToReturn = _mapper.Map<UserForDetailedDto>(createdUser);
+
+            return CreatedAtRoute("GetUser", new { controller = "Users", id = createdUser.Id }, userToReturn);
         }
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
