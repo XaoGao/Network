@@ -1,4 +1,7 @@
+using System.IO;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 using Network_API.Models;
 
 namespace Network_API.Data
@@ -7,7 +10,7 @@ namespace Network_API.Data
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-            
+
         }
         public DbSet<Value> Values { get; set; }
         public DbSet<User> Users { get; set; }
@@ -40,6 +43,17 @@ namespace Network_API.Data
                 .HasOne(u => u.Recipient)
                 .WithMany(m => m.MessagesReceived)
                 .OnDelete(DeleteBehavior.Restrict);
+        }
+    }
+    public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<DataContext>
+    {
+        public DataContext CreateDbContext(string[] args)
+        {
+            IConfigurationRoot configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile(@Directory.GetCurrentDirectory() + "/appsettings.json").Build();
+            var builder = new DbContextOptionsBuilder<DataContext>();
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            builder.UseSqlServer(connectionString);
+            return new DataContext(builder.Options);
         }
     }
 }
