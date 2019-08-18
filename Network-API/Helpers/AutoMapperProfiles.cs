@@ -31,12 +31,10 @@ namespace Network_API.Helpers
             CreateMap<UserForRegisterDto, User>();
             CreateMap<MessageForCreationDto, Message>().ReverseMap();
             CreateMap<Message, MessageToReturnDto>()
-                .ForMember(dest => dest.SenderPhotoUrl, opt => {
-                    opt.MapFrom(s => s.Sender.Photos.First(p => p.IsMain).Url);
-                })
-                .ForMember(dest => dest.RecipientPhotoUrl, opt => {
-                    opt.MapFrom(src => src.Recipient.Photos.First(r => r.IsMain).Url);
-                });
+                .ForMember(m => m.SenderPhotoUrl, opt => opt
+                    .MapFrom(u => u.Sender.Photos.FirstOrDefault(p => p.IsMain).Url))
+                .ForMember(m => m.RecipientPhotoUrl, opt => opt
+                    .MapFrom(u => u.Recipient.Photos.FirstOrDefault(p => p.IsMain).Url));
         }
     }
 }
