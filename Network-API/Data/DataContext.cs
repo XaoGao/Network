@@ -45,15 +45,15 @@ namespace Network_API.Data
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }
-    /* public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<DataContext>
+     public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<DataContext>
     {
         public DataContext CreateDbContext(string[] args)
         {
             IConfigurationRoot configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile(@Directory.GetCurrentDirectory() + "/appsettings.json").Build();
             var builder = new DbContextOptionsBuilder<DataContext>();
             var connectionString = configuration.GetConnectionString("DefaultConnection");
-            builder.UseMySql(connectionString);
+            builder.UseSqlServer(connectionString);
             return new DataContext(builder.Options);
         }
-    }*/
+    }
 }
